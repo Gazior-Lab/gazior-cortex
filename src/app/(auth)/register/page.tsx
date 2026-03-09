@@ -4,7 +4,15 @@ import Divider from "@/features/auth/components/Divider";
 import FormInput from "@/features/auth/components/FormInput";
 import GoogleLoginBtn from "@/features/auth/components/GoogleLoginBtn";
 import Link from "next/link";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
+import type {Metadata} from "next"
+
+// ----Meta Data---------------
+
+// export const metadata: Metadata = {
+//   title: 'Join Cortext',
+// }
+
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -87,12 +95,14 @@ export default function RegisterPage() {
 
   const validate = (): Record<string, string> => {
     const e: Record<string, string> = {};
+
     if (!name.trim()) e.name = "Full name is required";
     if (!email) e.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email)) e.email = "Enter a valid email";
     if (!password) e.password = "Password is required";
     else if (password.length < 8) e.password = "At least 8 characters required";
     if (!agreed) e.agreed = "You must accept the terms";
+
     return e;
   };
 
@@ -104,6 +114,8 @@ export default function RegisterPage() {
     setLoading(true);
     setTimeout(() => setLoading(false), 1800);
   };
+
+
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">

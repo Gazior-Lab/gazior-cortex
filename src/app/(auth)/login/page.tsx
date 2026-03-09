@@ -5,6 +5,11 @@ import FormInput from "@/features/auth/components/FormInput";
 import GoogleLoginBtn from "@/features/auth/components/GoogleLoginBtn";
 import Link from "next/link";
 import { JSX, useState,SyntheticEvent } from "react";
+import type { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   title: 'Login',
+// }
 
 const EyeIcon = ({ open }: { open: boolean }): JSX.Element => (
   <svg
