@@ -1,10 +1,148 @@
-import React from 'react'
+"use client";
 
-export default function page() {
+import Divider from "@/features/auth/components/Divider";
+import FormInput from "@/features/auth/components/FormInput";
+import GoogleLoginBtn from "@/features/auth/components/GoogleLoginBtn";
+import Link from "next/link";
+import { JSX, useState,SyntheticEvent } from "react";
+import type { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   title: 'Login',
+// }
+
+const EyeIcon = ({ open }: { open: boolean }): JSX.Element => (
+  <svg
+    viewBox="0 0 24 24"
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    {open ? (
+      <>
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx={12} cy={12} r={3} />
+      </>
+    ) : (
+      <>
+        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+        <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
+        <line x1={1} y1={1} x2={23} y2={23} />
+      </>
+    )}
+  </svg>
+);
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
+  const [showPw, setShowPw] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const errs: Record<string, string> = {};
+    if (!email) errs.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = "Enter a valid email";
+    if (!pw) errs.pw = "Password is required";
+    setErrors(errs);
+    if (Object.keys(errs).length) return;
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    }, 1500);
+  };
+
   return (
-    <div>
-      <h2 className='text-primary'>Login to access</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem ex reprehenderit qui, quaerat quas facilis unde nemo! Consequatur nam quis fugiat. Modi fugiat cum ipsum obcaecati velit nobis ipsa eveniet!</p>
-    </div>
-  )
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-[1.65rem] font-extrabold tracking-[-0.03em] text-foreground mb-1.5">
+          Sign in
+        </h1>
+        <p className="text-[0.85rem] text-muted">
+          New here?{" "}
+          <Link
+            href="/register"
+            className="text-primary font-bold hover:underline"
+          >
+            Create account
+          </Link>
+        </p>
+      </div>
+
+      {/* Google */}
+      <GoogleLoginBtn label="Continue with Google" />
+      <Divider />
+
+      {/* Inputs */}
+      <div className="flex flex-col gap-3.5">
+        <FormInput
+          label="Email address"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={setEmail}
+          error={errors.email}
+        />
+        <FormInput
+          label="Password"
+          type={showPw ? "text" : "password"}
+          placeholder="Your password"
+          value={pw}
+          onChange={setPw}
+          error={errors.pw}
+          suffix={
+            <span onClick={() => setShowPw((p) => !p)}>
+              <EyeIcon open={showPw} />
+            </span>
+          }
+        />
+      </div>
+
+      {/* Remember + Forgot */}
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2 cursor-pointer text-[0.82rem] text-foreground">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="accent-primary w-3.5 h-3.5"
+          />
+          Remember me
+        </label>
+        <Link
+          href="/forgot-password"
+          className="text-[0.82rem] font-semibold text-primary hover:underline"
+        >
+          Forgot password?
+        </Link>
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full py-3 flex items-center justify-center gap-2 rounded-lg border-none font-bold text-[0.92rem] tracking-[0.01em] font-sans transition-all duration-150 text-primary-foreground cursor-pointer
+          ${success ? "bg-success" : loading ? "bg-muted cursor-not-allowed" : "bg-primary hover:opacity-90"}`}
+      >
+        {loading ? (
+          <>
+            <span className="inline-block w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+            Signing in...
+          </>
+        ) : success ? (
+          "✓ Signed in!"
+        ) : (
+          "Sign in to Cortext"
+        )}
+      </button>
+    </form>
+  );
 }
