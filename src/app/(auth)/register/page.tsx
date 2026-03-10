@@ -4,15 +4,13 @@ import Divider from "@/features/auth/components/Divider";
 import FormInput from "@/features/auth/components/FormInput";
 import GoogleLoginBtn from "@/features/auth/components/GoogleLoginBtn";
 import Link from "next/link";
-import { SyntheticEvent, useEffect, useState } from "react";
-import type {Metadata} from "next"
+import { SyntheticEvent, useState } from "react";
 
 // ----Meta Data---------------
 
 // export const metadata: Metadata = {
-//   title: 'Join Cortext',
+//   title: 'Join Cortex',
 // }
-
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -114,8 +112,6 @@ export default function RegisterPage() {
     setLoading(true);
     setTimeout(() => setLoading(false), 1800);
   };
-
-
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">

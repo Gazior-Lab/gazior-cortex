@@ -4,8 +4,7 @@ import Divider from "@/features/auth/components/Divider";
 import FormInput from "@/features/auth/components/FormInput";
 import GoogleLoginBtn from "@/features/auth/components/GoogleLoginBtn";
 import Link from "next/link";
-import { JSX, useState,SyntheticEvent } from "react";
-import type { Metadata } from "next";
+import { JSX, SyntheticEvent, useState } from "react";
 
 // export const metadata: Metadata = {
 //   title: 'Login',
@@ -140,7 +139,7 @@ export default function LoginPage() {
         ) : success ? (
           "✓ Signed in!"
         ) : (
-          "Sign in to Cortext"
+          "Sign in to Cortex"
         )}
       </button>
     </form>

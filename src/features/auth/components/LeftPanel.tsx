@@ -13,7 +13,7 @@ const LeftPanel = ({ mode }: { mode: string }): JSX.Element => (
         <BrainIcon />
       </div>
       <span className="text-white font-extrabold text-[1.1rem] tracking-[-0.02em]">
-        Cortext
+        Cortex
       </span>
     </div>
 
@@ -76,7 +76,7 @@ const LeftPanel = ({ mode }: { mode: string }): JSX.Element => (
           ))}
       </div>
       <p className="text-[rgba(255,255,255,0.82)] text-[0.83rem] leading-[1.6] mb-3">
-        &quot;Cortext turned my 300-page textbook into an interactive quiz
+        &quot;Cortex turned my 300-page textbook into an interactive quiz
         session in minutes. Passed my exam first try.&quot;
       </p>
       <div className="flex items-center gap-2.25">
