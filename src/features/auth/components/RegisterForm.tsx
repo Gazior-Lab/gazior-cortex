@@ -3,78 +3,14 @@
 import Divider from "@/features/auth/components/ui/Divider";
 import FormInput from "@/features/auth/components/ui/FormInput";
 import GoogleLoginBtn from "@/features/auth/components/ui/GoogleLoginBtn";
+import EyeIcon from "@/features/auth/components/ui/EyeIcon";
 import Link from "next/link";
 import { SyntheticEvent, useState } from "react";
+import PasswordStrength from "./ui/PasswordStrength";
+import { PLAN } from "@/lib/constants";
 
-// ── Icons ─────────────────────────────────────────────────────────────────────
 
-const EyeIcon = ({ open }: { open: boolean }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className="w-4 h-4"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    {open ? (
-      <>
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-        <circle cx={12} cy={12} r={3} />
-      </>
-    ) : (
-      <>
-        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
-        <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
-        <line x1={1} y1={1} x2={23} y2={23} />
-      </>
-    )}
-  </svg>
-);
 
-// ── Password Strength ─────────────────────────────────────────────────────────
-
-const getStrength = (
-  pw: string,
-): { score: number; label: string; color: string } => {
-  if (!pw) return { score: 0, label: "", color: "" };
-  let score = 0;
-  if (pw.length >= 8) score++;
-  if (/[A-Z]/.test(pw)) score++;
-  if (/[0-9]/.test(pw)) score++;
-  if (/[^A-Za-z0-9]/.test(pw)) score++;
-  const map: Record<number, { label: string; color: string }> = {
-    1: { label: "Weak", color: "bg-destructive" },
-    2: { label: "Fair", color: "bg-warning" },
-    3: { label: "Good", color: "bg-accent" },
-    4: { label: "Strong", color: "bg-success" },
-  };
-  return { score, ...map[score] };
-};
-
-const PasswordStrength = ({ password }: { password: string }) => {
-  const { score, label, color } = getStrength(password);
-  if (!password) return null;
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex gap-1">
-        {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full transition-colors duration-300 ${i <= score ? color : "bg-border"}`}
-          />
-        ))}
-      </div>
-      <span className="text-[0.72rem] text-muted font-medium">{label}</span>
-    </div>
-  );
-};
-
-// ── Register Form ─────────────────────────────────────────────────────────────
-
-const plans = [
-  { id: "free", label: "Free", desc: "5 docs, 20 chats/day" },
-  { id: "pro", label: "Pro ✦", desc: "Unlimited, all features" },
-] as const;
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -103,6 +39,15 @@ export default function RegisterForm() {
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length) return;
+
+    const data = {
+      name,
+      email,
+      password,
+    }
+
+    console.log("Register Data: ",data);
+
     setLoading(true);
     setTimeout(() => setLoading(false), 1800);
   };
@@ -170,7 +115,7 @@ export default function RegisterForm() {
           Start with
         </span>
         <div className="grid grid-cols-2 gap-2">
-          {plans.map((plan) => (
+          {PLAN.map((plan) => (
             <label
               key={plan.id}
               className={`flex flex-col gap-0.5 p-3 rounded-lg cursor-pointer border-[1.5px] transition-colors ${
