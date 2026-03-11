@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono} from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 export const inter = Inter({
@@ -10,14 +10,14 @@ export const inter = Inter({
 export const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-}); 
+});
 
 export const metadata: Metadata = {
   title: {
-    default: 'Cortext | AI Learning Agent',
-    template: '%s | Cortext',
+    default: "Cortex | AI Learning Agent",
+    template: "%s | Cortex",
   },
-  description: 'The intelligent SaaS for modern AI-driven learning.',
+  description: "The intelligent SaaS for modern AI-driven learning.",
 };
 
 export default function RootLayout({
@@ -27,9 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${mono.variable} antialiased`}
-      >
+      <body className={`${inter.variable} ${mono.variable} antialiased`}>
         {children}
       </body>
     </html>

@@ -31,7 +31,7 @@ const GoogleLoginBtn = ({
   return (
     <button
       type="button"
-      className="flex items-center justify-center gap-2.5 w-full py-[11px] px-4 border-[1.5px] border-border rounded-lg bg-background text-foreground text-[0.9rem] font-semibold font-sans cursor-pointer transition-colors duration-150 hover:bg-secondary"
+      className="flex items-center justify-center gap-2.5 w-full py-2.75 px-4 border-[1.5px] border-border rounded-lg bg-background text-foreground text-[0.9rem] font-semibold font-sans cursor-pointer transition-colors duration-150 hover:bg-secondary"
     >
       <GoogleIcon />
       {label}

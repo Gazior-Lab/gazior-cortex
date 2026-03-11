@@ -1,5 +1,6 @@
 import type { JSX } from "react";
-import { FormInputProps } from "../types";
+import { FormInputProps } from "../../types";
+
 
 const FormInput = ({
   label,
