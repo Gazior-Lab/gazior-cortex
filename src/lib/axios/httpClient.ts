@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_UR;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 if (!API_BASE_URL) {
   throw new Error("API_BASE_URL is not defined in environment variables");
@@ -52,10 +52,57 @@ const httpPost = async (
   }
 };
 
+const httpPut = async (
+  endpoint: string,
+  data: unknown,
+  options?: ApiRequestOptions,
+) => {
+  try {
+    const response = await axiosInstance().put(endpoint, data, {
+      params: options?.params,
+      headers: options?.headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`PUT request to failed to ${endpoint}`, error);
+    throw error;
+  }
+};
 
+const httpPatch = async (
+  endpoint: string,
+  data: unknown,
+  options?: ApiRequestOptions,
+) => {
+  try {
+    const response = await axiosInstance().patch(endpoint, data, {
+      params: options?.params,
+      headers: options?.headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`PATCH request failed to ${endpoint}`, error);
+    throw error;
+  }
+};
+
+const httpDelete = async (endpoint: string, options?: ApiRequestOptions) => {
+  try {
+    const response = await axiosInstance().delete(endpoint, {
+      params: options?.params,
+      headers: options?.headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`DELETE request failed to ${endpoint}`, error);
+    throw error;
+  }
+};
 
 export const httpClient = {
   get: httpGet,
   post: httpPost,
-
+  put: httpPut,
+  patch: httpPatch,
+  delete: httpDelete,
 };
