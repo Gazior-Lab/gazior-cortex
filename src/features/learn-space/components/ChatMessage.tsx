@@ -96,15 +96,15 @@ function renderContent(content: string): React.ReactNode {
 // -------------------------------------------------------
 function TypingIndicator() {
   return (
-    <div className="flex gap-4 mb-6">
-      <div className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 bg-primary/10">
-        <Sparkles className="w-4 h-4 text-primary" />
+    <div className="flex gap-4 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-gradient-to-tr from-primary to-primary/80 ring-2 ring-primary/20 shadow-sm text-white">
+        <Sparkles className="w-4 h-4 text-white" />
       </div>
-      <div className="flex items-center gap-1.5 px-4 py-3 bg-white border border-border rounded-2xl shadow-sm">
+      <div className="flex items-center gap-1.5 px-4 py-3.5 bg-white border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm">
         {[0, 150, 300].map((delay) => (
           <div
             key={delay}
-            className="w-2 h-2 rounded-full bg-slate-300 animate-bounce"
+            className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce"
             style={{ animationDelay: `${delay}ms` }}
           />
         ))}
@@ -205,24 +205,37 @@ export function ChatMessage({
   sources = [],
   onRegenerate,
 }: ChatMessageProps) {
+  const [formattedTime, setFormattedTime] = React.useState<string>("");
+
+  React.useEffect(() => {
+    setFormattedTime(
+      message.timestamp.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
+  }, [message.timestamp]);
+
   if (message.isLoading) return <TypingIndicator />;
 
   const isUser = message.role === "user";
 
   return (
     <div
-      className={`group flex gap-3 mb-5 ${isUser ? "flex-row-reverse" : ""}`}
+      className={`group flex gap-3 mb-5 animate-in fade-in slide-in-from-bottom-2 duration-300 ${isUser ? "flex-row-reverse" : ""}`}
     >
       {/* Avatar */}
       <div
-        className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 ${
-          isUser ? "bg-slate-200" : "bg-primary/10"
+        className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${
+          isUser
+            ? "bg-gradient-to-tr from-slate-200 to-slate-100 ring-1 ring-slate-200"
+            : "bg-gradient-to-tr from-primary to-primary/80 ring-2 ring-primary/20 text-white"
         }`}
       >
         {isUser ? (
           <User className="w-4 h-4 text-slate-600" />
         ) : (
-          <Sparkles className="w-4 h-4 text-primary" />
+          <Sparkles className="w-4 h-4 text-white" />
         )}
       </div>
 
@@ -231,10 +244,10 @@ export function ChatMessage({
         className={`flex-1 max-w-[82%] flex flex-col ${isUser ? "items-end" : "items-start"}`}
       >
         <div
-          className={`px-4 py-3 rounded-2xl text-sm ${
+          className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
             isUser
-              ? "bg-primary text-white rounded-tr-sm"
-              : "bg-white border border-border shadow-sm rounded-tl-sm"
+              ? "bg-gradient-to-br from-primary to-primary/90 text-white rounded-tr-sm shadow-sm"
+              : "bg-white border border-slate-200 shadow-sm shadow-slate-200/50 rounded-tl-sm ring-1 ring-black/5"
           }`}
         >
           {isUser ? (
@@ -261,10 +274,8 @@ export function ChatMessage({
         )}
 
         <span className="text-[11px] text-muted mt-1 px-1">
-          {message.timestamp.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          {formattedTime}
+
         </span>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Brain, Menu, Search, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Brain, PanelLeft, PanelRight, Menu, Search, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 // Hooks
@@ -189,6 +189,7 @@ export default function LearnSpacePage() {
   const [activePanel, setActivePanel] = useState<ActivePanel>("chat");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
+  const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true); // Desktop toggle for left panel
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -215,19 +216,30 @@ export default function LearnSpacePage() {
       ------------------------------------------------------- */}
       <aside
         className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-70 bg-white transform transition-transform duration-300 ease-in-out
-        ${isMobileSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0 border-r border-slate-200"}
+        fixed lg:static inset-y-0 left-0 z-50 bg-white transform transition-all duration-300 ease-in-out shrink-0
+        ${isMobileSidebarOpen ? "translate-x-0 w-70 shadow-2xl" : "-translate-x-full lg:translate-x-0 border-r border-slate-200"}
+        ${!isMobileSidebarOpen && !isLeftPanelOpen ? "lg:w-0 lg:border-none lg:opacity-0 lg:overflow-hidden" : "lg:w-70"}
       `}
       >
         <div className="h-full flex flex-col">
           {/* Sidebar Header */}
-          <div className="h-14 flex items-center gap-2.5 px-5 border-b border-slate-50">
-            <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
+          <div className="h-14 flex items-center justify-between gap-2 px-3 border-b border-slate-50">
+            <div className="flex items-center gap-2.5 pl-1.5">
+              <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-bold text-slate-800 tracking-tight">
+                Gazior Cortex
+              </span>
             </div>
-            <span className="font-bold text-slate-800 tracking-tight">
-              Gazior Cortex
-            </span>
+            <Tooltip content="Close sidebar">
+              <button
+                onClick={() => setIsLeftPanelOpen(false)}
+                className="hidden lg:flex p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+              >
+                <PanelLeft className="w-5 h-5" />
+              </button>
+            </Tooltip>
           </div>
 
           {/* Sidebar Content (Scrollable) */}
@@ -241,13 +253,6 @@ export default function LearnSpacePage() {
             onNewSession={createSession}
           />
 
-          {/* Sidebar Mobile Close */}
-          <button
-            onClick={() => setIsMobileSidebarOpen(false)}
-            className="lg:hidden absolute top-4 -right-10 w-8 h-8 bg-white rounded-r-lg shadow-md flex items-center justify-center text-slate-400"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
       </aside>
 
@@ -256,15 +261,29 @@ export default function LearnSpacePage() {
       ------------------------------------------------------- */}
       <main className="flex-1 flex flex-col min-w-0 bg-white lg:bg-[#fafafa]">
         {/* Workspace Top Header */}
-        <header className="h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 lg:px-8">
-          <div className="flex items-center gap-4">
+        <header className="h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 lg:px-6">
+          <div className="flex items-center gap-3">
+            {/* Mobile Sidebar Toggle */}
             <button
               onClick={() => setIsMobileSidebarOpen(true)}
-              className="lg:hidden p-2 hover:bg-slate-100 rounded-lg text-slate-500"
+              className="lg:hidden p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-3">
+            
+            {/* Desktop Left Sidebar Toggle */}
+            {!isLeftPanelOpen && (
+               <Tooltip content="Open sidebar">
+                <button
+                  onClick={() => setIsLeftPanelOpen(true)}
+                  className="hidden lg:flex p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+                >
+                  <PanelLeft className="w-5 h-5" />
+                </button>
+              </Tooltip>
+            )}
+
+            <div className="flex items-center gap-3 ml-1 lg:ml-0">
               <Badge
                 variant="outline"
                 className="hidden sm:inline-flex bg-slate-50/50"
@@ -283,17 +302,33 @@ export default function LearnSpacePage() {
                 <Search className="w-4 h-4" />
               </Button>
             </Tooltip>
+            
             {activePanel !== "chat" && (
               <Button
                 variant="outline"
                 size="xs"
                 onClick={() => setActivePanel("chat")}
-                className="gap-1.5"
+                className="gap-1.5 hidden sm:flex"
               >
                 <ArrowLeft className="w-3.5 h-3.5" /> Back to Chat
               </Button>
             )}
-            <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center ml-2">
+            
+            {/* Right Panel Toggle */}
+            <Tooltip content={isRightPanelOpen ? "Close toolbox" : "Open toolbox"}>
+              <button
+                onClick={() => setIsRightPanelOpen(!isRightPanelOpen)}
+                className={`p-1.5 rounded-lg transition-colors ml-1 ${
+                  !isRightPanelOpen 
+                    ? "text-slate-800 hover:bg-slate-100 bg-slate-100/50" 
+                    : "text-slate-500 hover:bg-slate-100"
+                }`}
+              >
+                <PanelRight className="w-5 h-5" />
+              </button>
+            </Tooltip>
+
+            <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center ml-2 sm:ml-4 shrink-0">
               <span className="text-xs font-bold text-slate-500">JD</span>
             </div>
           </div>
@@ -361,8 +396,8 @@ export default function LearnSpacePage() {
       ------------------------------------------------------- */}
       <aside
         className={`
-        fixed lg:static inset-y-0 right-0 z-50 w-[320px] bg-white transform transition-transform duration-300 ease-in-out
-        ${isRightPanelOpen ? "translate-x-0 border-l border-slate-200" : "translate-x-full lg:w-0 lg:border-none lg:opacity-0"}
+        fixed lg:static inset-y-0 right-0 z-50 bg-white transform transition-all duration-300 ease-in-out shrink-0
+        ${isRightPanelOpen ? "translate-x-0 w-80 shadow-2xl lg:shadow-none border-l border-slate-200" : "translate-x-full lg:translate-x-0 lg:w-0 lg:border-none lg:opacity-0 lg:overflow-hidden"}
       `}
       >
         <div className="h-full flex flex-col p-5 overflow-y-auto custom-scrollbar">
@@ -393,28 +428,23 @@ export default function LearnSpacePage() {
           </div>
         </div>
 
-        {/* Panel Toggle Tab (Desktop) */}
+        {/* Mobile Close Button for Right Panel */}
         <button
-          onClick={() => setIsRightPanelOpen(!isRightPanelOpen)}
-          className="hidden lg:flex absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-16 bg-white border border-slate-200 rounded-l-xl items-center justify-center text-slate-300 hover:text-primary shadow-sm transition-all"
+           onClick={() => setIsRightPanelOpen(false)}
+           className="lg:hidden absolute top-4 right-4 p-1.5 bg-slate-100 rounded-full text-slate-500"
         >
-          {isRightPanelOpen ? (
-            <div className="w-1 h-8 bg-slate-100 rounded-full" />
-          ) : (
-            <div className="flex flex-col gap-1 items-center">
-              <div className="w-1 h-1 bg-primary rounded-full" />
-              <div className="w-1 h-3 bg-primary rounded-full" />
-              <div className="w-1 h-1 bg-primary rounded-full" />
-            </div>
-          )}
+           <X className="w-4 h-4" />
         </button>
       </aside>
 
       {/* Overlay for mobile sidebars */}
-      {isMobileSidebarOpen && (
+      {(isMobileSidebarOpen || (isRightPanelOpen && typeof window !== 'undefined' && window.innerWidth < 1024)) && (
         <div
-          onClick={() => setIsMobileSidebarOpen(false)}
-          className="lg:hidden fixed inset-0 bg-slate-900/10 backdrop-blur-[1px] z-40 transition-opacity"
+          onClick={() => {
+            setIsMobileSidebarOpen(false);
+            if (window.innerWidth < 1024) setIsRightPanelOpen(false);
+          }}
+          className="lg:hidden fixed inset-0 bg-slate-900/20 backdrop-blur-[2px] z-40 transition-opacity"
         />
       )}
 

@@ -8,6 +8,7 @@ import {
   GraduationCap,
   ShieldCheck,
   Timer,
+  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ExamQuestion } from "../types";

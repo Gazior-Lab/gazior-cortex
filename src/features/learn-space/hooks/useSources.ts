@@ -12,6 +12,7 @@ const DEMO_SOURCES: Source[] = [
     uploadTime: new Date(Date.now() - 1000 * 60 * 10),
     size: '2.4 MB',
     pageCount: 48,
+    pages: [],
   },
   {
     id: 'src-2',
@@ -21,6 +22,7 @@ const DEMO_SOURCES: Source[] = [
     uploadTime: new Date(Date.now() - 1000 * 60 * 5),
     size: '1.8 MB',
     pageCount: 32,
+    pages: [],
   },
 ];
 
@@ -43,6 +45,7 @@ export function useSources(): UseSourcesReturn {
         status: 'uploading',
         uploadTime: new Date(),
         size: formatFileSize(file.size),
+        pages: [],
       };
 
       setSources((prev) => [newSource, ...prev]);

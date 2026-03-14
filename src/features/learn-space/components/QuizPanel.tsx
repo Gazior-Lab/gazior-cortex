@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   FileQuestion,
   RotateCcw,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import type { QuizQuestion, QuizResult } from "../types";
@@ -25,9 +26,13 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
 
   if (questions.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center p-12 text-center opacity-60">
-        <FileQuestion className="w-12 h-12 mb-4 text-slate-300" />
-        <p className="text-slate-500">Generating your personalized quiz...</p>
+      <Card className="flex flex-col items-center justify-center p-12 text-center bg-slate-50/50 border-dashed border-2 border-slate-200">
+        <div className="relative mb-4">
+          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse" />
+          <FileQuestion className="w-12 h-12 text-primary/60 relative z-10 animate-bounce" style={{ animationDuration: '2s' }} />
+        </div>
+        <p className="text-slate-500 font-medium">Generating your personalized quiz...</p>
+        <p className="text-xs text-slate-400 mt-2">This might take a few seconds</p>
       </Card>
     );
   }
@@ -88,9 +93,9 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
     const percentage = Math.round((score / questions.length) * 100);
 
     return (
-      <Card className="p-8 text-center animate-in zoom-in-95 duration-300">
-        <div className="w-20 h-20 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 className="w-10 h-10" />
+      <Card className="p-8 text-center animate-in zoom-in-95 duration-500 shadow-xl border-primary/20 bg-gradient-to-b from-white to-slate-50/50">
+        <div className="w-24 h-24 bg-gradient-to-tr from-success/20 to-success/5 text-success rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-success/10">
+          <CheckCircle2 className="w-12 h-12" />
         </div>
         <h3 className="text-2xl font-bold mb-2">Quiz Completed!</h3>
         <p className="text-slate-500 mb-8">
@@ -132,14 +137,19 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
 
   return (
     <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <FileQuestion className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-slate-900">Concept Quiz</h3>
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <FileQuestion className="w-5 h-5 text-primary" />
+          </div>
+          <h3 className="font-semibold text-slate-900 text-lg">Concept Quiz</h3>
         </div>
-        <span className="text-xs font-medium text-slate-500">
-          Question {currentIndex + 1} of {questions.length}
-        </span>
+        <div className="flex flex-col items-end">
+          <span className="text-sm font-semibold text-slate-700">
+            Question {currentIndex + 1}
+            <span className="text-slate-400 font-normal"> of {questions.length}</span>
+          </span>
+        </div>
       </div>
 
       <ProgressBar value={progress} />
@@ -155,13 +165,13 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
             const isCorrect = option.isCorrect;
             const statusClass = showExplanation
               ? isCorrect
-                ? "border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20"
+                ? "border-emerald-500 bg-emerald-50/80 ring-2 ring-emerald-500/20 shadow-sm"
                 : isSelected
-                  ? "border-red-500 bg-red-50 ring-1 ring-red-500/20"
-                  : "opacity-60"
+                  ? "border-red-500 bg-red-50/80 ring-2 ring-red-500/20 shadow-sm"
+                  : "opacity-50 border-slate-200 bg-slate-50/50 grayscale-[50%]"
               : isSelected
-                ? "border-primary bg-primary/5 ring-1 ring-[var(--color-primary)]/20 shadow-sm"
-                : "hover:border-slate-300 hover:bg-slate-50";
+                ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-md transform -translate-y-0.5"
+                : "border-slate-200 hover:border-primary/40 hover:bg-primary/5 hover:shadow-sm";
 
             return (
               <button
@@ -212,12 +222,14 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
         </div>
 
         {showExplanation && (
-          <div className="mt-6 p-4 rounded-md bg-slate-50 border border-slate-200 animate-in fade-in duration-500">
-            <div className="flex items-center gap-2 mb-2 text-slate-900 font-semibold text-xs uppercase tracking-wider">
-              <Brain className="w-3.5 h-3.5 text-primary" />
+          <div className="mt-8 p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 animate-in slide-in-from-bottom-4 fade-in duration-500 shadow-sm">
+            <div className="flex items-center gap-2 mb-3 text-slate-900 font-bold text-xs uppercase tracking-widest">
+              <div className="p-1 bg-primary/10 rounded">
+                <Brain className="w-4 h-4 text-primary" />
+              </div>
               Explanation
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed italic">
+            <p className="text-sm text-slate-700 leading-relaxed">
               {currentQuestion.explanation}
             </p>
           </div>

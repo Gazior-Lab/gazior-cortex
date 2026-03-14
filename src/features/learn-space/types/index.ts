@@ -6,6 +6,7 @@ export type SourceType = 'pdf' | 'doc' | 'docx' | 'txt' | 'md';
 export type SourceStatus = 'uploading' | 'processing' | 'ready' | 'error';
 
 export interface Source {
+  pages: any;
   id: string;
   name: string;
   type: SourceType;

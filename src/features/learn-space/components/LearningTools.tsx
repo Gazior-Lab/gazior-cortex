@@ -63,10 +63,15 @@ export function LearningTools({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-slate-900">Learning Studio</h3>
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2.5">
+          <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-sm ring-1 ring-primary/20">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900 text-base tracking-tight">Learning Studio</h3>
+            <p className="text-[11px] text-slate-500 font-medium mt-0.5">Select an AI tool to begin</p>
+          </div>
         </div>
       </div>
 
@@ -81,9 +86,11 @@ export function LearningTools({
         ))}
 
         {/* Placeholder for future tools */}
-        <div className="border border-dashed border-slate-200 rounded-(--radius-lg) p-4 text-center">
-          <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">
+        <div className="border-2 border-dashed border-slate-200 rounded-xl p-5 text-center bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-default">
+          <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest flex items-center justify-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
             More Tools Coming Soon
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
           </p>
         </div>
       </div>
