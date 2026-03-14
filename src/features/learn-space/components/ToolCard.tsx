@@ -1,7 +1,8 @@
 "use client";
 
 import type { LearningTool } from "../types";
-import { Button, Card } from "./ui";
+import { Button } from "./ui/Button";
+import { Card } from "./ui/Card";
 
 interface ToolCardProps {
   tool: LearningTool;

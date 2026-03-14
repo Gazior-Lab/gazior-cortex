@@ -53,7 +53,6 @@ export function ChatInput({
           border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20
         `}
       >
-        {/* Attach */}
         <Tooltip content="Attach file">
           <button
             className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors shrink-0"
@@ -64,7 +63,6 @@ export function ChatInput({
           </button>
         </Tooltip>
 
-        {/* Textarea */}
         <textarea
           ref={textareaRef}
           value={message}
@@ -80,7 +78,6 @@ export function ChatInput({
         />
 
         <div className="flex items-center gap-1 shrink-0">
-          {/* Voice */}
           <Tooltip content="Voice input">
             <button
               className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -91,7 +88,6 @@ export function ChatInput({
             </button>
           </Tooltip>
 
-          {/* Send */}
           <button
             onClick={handleSubmit}
             disabled={!canSend}

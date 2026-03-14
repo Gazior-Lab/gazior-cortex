@@ -1,6 +1,4 @@
-// ============================================================
-// Learn Space — Shared Types
-// ============================================================
+
 
 export type SourceType = 'pdf' | 'doc' | 'docx' | 'txt' | 'md';
 export type SourceStatus = 'uploading' | 'processing' | 'ready' | 'error';
@@ -16,9 +14,7 @@ export interface Source {
   pageCount?: number;
 }
 
-// -------------------------------------------------------
-// Chat
-// -------------------------------------------------------
+
 
 export type MessageRole = 'user' | 'assistant' | 'system';
 
@@ -40,9 +36,7 @@ export interface ChatSession {
   messages: ChatMessage[];
 }
 
-// -------------------------------------------------------
-// Notebook (multi-notebook like NotebookLM)
-// -------------------------------------------------------
+
 
 export interface Notebook {
   id: string;
@@ -54,9 +48,7 @@ export interface Notebook {
   activeSessionId: string;
 }
 
-// -------------------------------------------------------
-// Flashcards
-// -------------------------------------------------------
+
 
 export type CardConfidence = 'easy' | 'medium' | 'hard' | 'unrated';
 
@@ -67,9 +59,7 @@ export interface Flashcard {
   confidence: CardConfidence;
 }
 
-// -------------------------------------------------------
-// Quiz
-// -------------------------------------------------------
+
 
 export type QuestionType = 'mcq' | 'true_false' | 'short_answer';
 
@@ -95,9 +85,7 @@ export interface QuizResult {
   completedAt: Date;
 }
 
-// -------------------------------------------------------
-// Exam
-// -------------------------------------------------------
+
 
 export interface ExamQuestion extends QuizQuestion {
   points: number;
@@ -112,9 +100,7 @@ export interface ExamResult {
   completedAt: Date;
 }
 
-// -------------------------------------------------------
-// Notes
-// -------------------------------------------------------
+
 
 export interface Note {
   id: string;
@@ -126,9 +112,7 @@ export interface Note {
   tags: string[];
 }
 
-// -------------------------------------------------------
-// Tools / Panels
-// -------------------------------------------------------
+
 
 export type ActivePanel =
   | 'chat'

@@ -26,7 +26,6 @@ export function ExamPanel({ questions, timeLimit = 15 }: ExamPanelProps) {
   const [timeLeft, setTimeLeft] = useState(timeLimit * 60);
   const [isFinished, setIsFinished] = useState(false);
 
-  // Timer effect
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isStarted && !isFinished && timeLeft > 0) {

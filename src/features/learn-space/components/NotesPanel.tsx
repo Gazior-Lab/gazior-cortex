@@ -3,7 +3,9 @@
 import { BookOpen, FileText, Pencil, Save, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { Note } from "../types";
-import { Badge, Button, Divider } from "./ui";
+import { Badge } from "./ui/Badge";
+import { Button } from "./ui/Button";
+import { Divider } from "./ui/Divider";
 
 interface NotesPanelProps {
   notes: Note[];
@@ -26,7 +28,6 @@ export function NotesPanel({ notes }: NotesPanelProps) {
   };
 
   const handleSave = () => {
-    // Logic to save updated note...
     setIsEditing(false);
   };
 
@@ -43,7 +44,6 @@ export function NotesPanel({ notes }: NotesPanelProps) {
       </div>
 
       <div className="flex flex-1 gap-4 min-h-0">
-        {/* Note List */}
         <div className="w-1/3 border-r border-slate-100 pr-4 overflow-y-auto space-y-2">
           {notes.map((note) => (
             <button
@@ -85,7 +85,6 @@ export function NotesPanel({ notes }: NotesPanelProps) {
           ))}
         </div>
 
-        {/* Note Editor/Viewer */}
         <div className="flex-1 flex flex-col min-w-0">
           {activeNote ? (
             <div className="flex flex-col h-full animate-in fade-in duration-300">

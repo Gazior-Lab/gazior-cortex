@@ -10,11 +10,8 @@ import {
 } from "lucide-react";
 import React from "react";
 import type { ChatMessage as ChatMessageType, Source } from "../types";
-import { Tooltip } from "./ui";
+import { Tooltip } from "./ui/Tooltip";
 
-// -------------------------------------------------------
-// Code Block
-// -------------------------------------------------------
 function CodeBlock({ code, language }: { code: string; language?: string }) {
   const [copied, setCopied] = React.useState(false);
 
@@ -45,9 +42,6 @@ function CodeBlock({ code, language }: { code: string; language?: string }) {
   );
 }
 
-// -------------------------------------------------------
-// Content Renderer (lightweight markdown)
-// -------------------------------------------------------
 function renderContent(content: string): React.ReactNode {
   const parts = content.split(/(```[\s\S]*?```|\*\*.*?\*\*|\*.*?\*|\n- .*)/g);
 
@@ -91,9 +85,6 @@ function renderContent(content: string): React.ReactNode {
   });
 }
 
-// -------------------------------------------------------
-// Typing Indicator
-// -------------------------------------------------------
 function TypingIndicator() {
   return (
     <div className="flex gap-4 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -113,9 +104,6 @@ function TypingIndicator() {
   );
 }
 
-// -------------------------------------------------------
-// Message Toolbar
-// -------------------------------------------------------
 function MessageToolbar({
   content,
   onRegenerate,
@@ -175,9 +163,6 @@ function MessageToolbar({
   );
 }
 
-// -------------------------------------------------------
-// Citation Badge
-// -------------------------------------------------------
 function CitationBadge({ index, source }: { index: number; source: string }) {
   return (
     <Tooltip content={source} side="top">
@@ -190,9 +175,6 @@ function CitationBadge({ index, source }: { index: number; source: string }) {
   );
 }
 
-// -------------------------------------------------------
-// Main Component
-// -------------------------------------------------------
 interface ChatMessageProps {
   message: ChatMessageType;
   sources?: Source[];
@@ -224,7 +206,6 @@ export function ChatMessage({
     <div
       className={`group flex gap-3 mb-5 animate-in fade-in slide-in-from-bottom-2 duration-300 ${isUser ? "flex-row-reverse" : ""}`}
     >
-      {/* Avatar */}
       <div
         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${
           isUser
@@ -239,7 +220,6 @@ export function ChatMessage({
         )}
       </div>
 
-      {/* Bubble + toolbar */}
       <div
         className={`flex-1 max-w-[82%] flex flex-col ${isUser ? "items-end" : "items-start"}`}
       >

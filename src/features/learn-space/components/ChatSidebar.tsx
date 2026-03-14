@@ -17,11 +17,9 @@ import {
 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import type { ChatSession, Source } from "../types";
-import { Badge, Button } from "./ui";
+import { Badge } from "./ui/Badge";
+import { Button } from "./ui/Button";
 
-// ─── Sub-Components ───────────────────────────────────────────────
-
-/** File type → icon color mapping */
 function FileIcon({ type }: { type: string }) {
   const isPdf = type?.toLowerCase() === "pdf";
   return (
@@ -36,7 +34,6 @@ function FileIcon({ type }: { type: string }) {
   );
 }
 
-/** Animated upload drop zone */
 function FileUploader({ onUpload }: { onUpload: (files: FileList) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -84,7 +81,6 @@ function FileUploader({ onUpload }: { onUpload: (files: FileList) => void }) {
   );
 }
 
-/** Single source item with hover actions */
 function SourceItem({
   source,
   onRemove,
@@ -116,7 +112,6 @@ function SourceItem({
               <span className="text-[10px] text-slate-400">{source.pages}p</span>
             </>
           )}
-          {/* Processing status dot */}
           <span className="ml-auto">
             {source.status === "processing" ? (
               <span className="flex items-center gap-1 text-[10px] text-amber-500">
@@ -129,7 +124,6 @@ function SourceItem({
         </div>
       </div>
 
-      {/* Remove button on hover */}
       <button
         onClick={(e) => { e.stopPropagation(); onRemove(source.id); }}
         className={`
@@ -145,7 +139,6 @@ function SourceItem({
   );
 }
 
-/** Collapsible section wrapper */
 function SidebarSection({
   icon: Icon,
   label,
@@ -198,7 +191,6 @@ function SidebarSection({
   );
 }
 
-/** Tooltip wrapper */
 function Tip({ content, children }: { content: string; children: React.ReactNode }) {
   return (
     <div className="relative group/tip">
@@ -209,8 +201,6 @@ function Tip({ content, children }: { content: string; children: React.ReactNode
     </div>
   );
 }
-
-// ─── Main ChatSidebar ─────────────────────────────────────────────
 
 interface ChatSidebarProps {
   sources: Source[];
@@ -253,12 +243,10 @@ export function ChatSidebar({
   return (
     <div className="w-full h-full flex flex-col bg-white border-r border-slate-100 select-none">
 
-      {/* ── Upload Zone ── */}
       <div className="p-3 border-b border-slate-50">
         <FileUploader onUpload={onUpload} />
       </div>
 
-      {/* ── Scrollable Body ── */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-2 py-3 space-y-5">
 
         {/* Documents Section */}
@@ -286,7 +274,6 @@ export function ChatSidebar({
         {/* Divider */}
         <div className="h-px bg-slate-100 mx-2" />
 
-        {/* Recent Chats Section */}
         <SidebarSection
           icon={History}
           label="Recent Chats"
@@ -316,7 +303,6 @@ export function ChatSidebar({
             </div>
           }
         >
-          {/* Search input */}
           {sessionSearchActive && (
             <div className="relative mx-1 mb-2">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400" />
@@ -378,9 +364,7 @@ export function ChatSidebar({
         </SidebarSection>
       </div>
 
-      {/* ── Footer ── */}
       <div className="p-3 border-t border-slate-100 bg-slate-50/40 space-y-1">
-        {/* Quick stats pill */}
         <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg">
           <Sparkles className="w-3.5 h-3.5 text-primary" />
           <span className="text-[10px] text-slate-500 flex-1">
@@ -400,7 +384,6 @@ export function ChatSidebar({
   );
 }
 
-/** Session list sub-component */
 function SessionList({
   sessions,
   activeSessionId,
@@ -456,7 +439,6 @@ function SessionList({
                 {session.timestamp.toLocaleDateString([], { month: "short", day: "numeric" })}
               </span>
             </div>
-            {/* Active indicator bar */}
             {isActive && (
               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full" />
             )}

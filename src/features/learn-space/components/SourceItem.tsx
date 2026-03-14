@@ -2,7 +2,8 @@
 
 import { AlertCircle, CheckCircle2, FileText, Trash2 } from "lucide-react";
 import type { Source } from "../types";
-import { Spinner, Tooltip } from "./ui";
+import { Spinner } from "./ui/Spinner";
+import { Tooltip } from "./ui/Tooltip";
 
 interface SourceItemProps {
   source: Source;
@@ -50,14 +51,12 @@ export function SourceItem({ source, onRemove }: SourceItemProps) {
 
   return (
     <div className="group flex items-center gap-3 p-2.5 rounded-md hover:bg-slate-50 transition-colors cursor-pointer border border-transparent hover:border-border">
-      {/* File type icon */}
       <div
         className={`shrink-0 p-2 rounded-sm ${config.bg}`}
       >
         <FileText className={`w-4 h-4 ${config.color}`} />
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0">
         <p className="text-xs font-medium text-slate-900 truncate leading-tight">
           {source.name}
@@ -75,7 +74,6 @@ export function SourceItem({ source, onRemove }: SourceItemProps) {
         </p>
       </div>
 
-      {/* Status */}
       <div className="flex items-center gap-1.5 shrink-0">
         <Tooltip content={statusLabel(source.status)}>
           <StatusIcon status={source.status} />
