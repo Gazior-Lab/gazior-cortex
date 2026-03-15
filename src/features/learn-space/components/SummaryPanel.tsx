@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, CheckCircle2, Layout, Sparkles, TrendingUp } from "lucide-react";
+import { BookOpen, CheckCircle2 } from "lucide-react";
 import type { Summary } from "../types";
 import { Badge, Card } from "./ui";
 

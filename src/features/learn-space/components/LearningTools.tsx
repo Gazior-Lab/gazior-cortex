@@ -65,7 +65,7 @@ export function LearningTools({
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2.5">
-          <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-sm ring-1 ring-primary/20">
+          <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-primary/20 to-primary/5 text-primary shadow-sm ring-1 ring-primary/20">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>

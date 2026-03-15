@@ -325,7 +325,7 @@ export function ExamPanel({
                  {currentIndex === questions.length - 1 ? (
                     <Button
                       size="lg"
-                      className="flex-1 md:min-w-[200px] h-14 font-black shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90"
+                      className="flex-1 md:min-w-50 h-14 font-black shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90"
                       onClick={finishExam}
                     >
                       Submit for Analysis
@@ -334,7 +334,7 @@ export function ExamPanel({
                  ) : (
                     <Button
                       size="lg"
-                      className="flex-1 md:min-w-[200px] h-14 font-bold shadow-xl shadow-primary/10"
+                      className="flex-1 md:min-w-50 h-14 font-bold shadow-xl shadow-primary/10"
                       onClick={() => onIndexChange(currentIndex + 1)}
                     >
                       Advance

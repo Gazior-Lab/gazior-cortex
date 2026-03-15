@@ -88,7 +88,7 @@ function renderContent(content: string): React.ReactNode {
 function TypingIndicator() {
   return (
     <div className="flex gap-4 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-gradient-to-tr from-primary to-primary/80 ring-2 ring-primary/20 shadow-sm text-white">
+      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-linear-to-tr from-primary to-primary/80 ring-2 ring-primary/20 shadow-sm text-white">
         <Sparkles className="w-4 h-4 text-white" />
       </div>
       <div className="flex items-center gap-1.5 px-4 py-3.5 bg-white border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm">
