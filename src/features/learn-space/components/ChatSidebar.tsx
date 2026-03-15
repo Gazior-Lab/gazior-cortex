@@ -18,7 +18,6 @@ import {
 import React, { useRef, useState } from "react";
 import type { ChatSession, Source } from "../types";
 
-
 function FileIcon({ type }: { type: string }) {
   const isPdf = type?.toLowerCase() === "pdf";
   return (
@@ -45,16 +44,20 @@ function FileUploader({ onUpload }: { onUpload: (files: FileList) => void }) {
 
   return (
     <div
-      onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragging(true);
+      }}
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
       className={`
         relative group cursor-pointer rounded-xl border-2 border-dashed px-4 py-4 text-center
         transition-all duration-200 select-none
-        ${isDragging
-          ? "border-primary bg-primary/5 scale-[1.01]"
-          : "border-slate-200 hover:border-primary/50 hover:bg-slate-50/80"
+        ${
+          isDragging
+            ? "border-primary bg-primary/5 scale-[1.01]"
+            : "border-slate-200 hover:border-primary/50 hover:bg-slate-50/80"
         }
       `}
     >
@@ -66,10 +69,12 @@ function FileUploader({ onUpload }: { onUpload: (files: FileList) => void }) {
         accept=".pdf,.docx,.txt,.md"
         onChange={(e) => e.target.files && onUpload(e.target.files)}
       />
-      <div className={`
+      <div
+        className={`
         mx-auto w-9 h-9 rounded-lg flex items-center justify-center mb-2 transition-all duration-200
         ${isDragging ? "bg-primary text-white" : "bg-slate-100 text-slate-400 group-hover:bg-primary/10 group-hover:text-primary"}
-      `}>
+      `}
+      >
         <Upload className="w-4 h-4" />
       </div>
       <p className="text-[11px] font-semibold text-slate-600 mb-0.5">
@@ -108,7 +113,9 @@ function SourceItem({
           {source.pages && (
             <>
               <span className="text-slate-200">·</span>
-              <span className="text-[10px] text-slate-400">{source.pages}p</span>
+              <span className="text-[10px] text-slate-400">
+                {source.pages}p
+              </span>
             </>
           )}
           <span className="ml-auto">
@@ -124,7 +131,10 @@ function SourceItem({
       </div>
 
       <button
-        onClick={(e) => { e.stopPropagation(); onRemove(source.id); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(source.id);
+        }}
         className={`
           shrink-0 w-5 h-5 rounded flex items-center justify-center text-slate-300 hover:text-red-400 hover:bg-red-50
           transition-all duration-150
@@ -172,10 +182,11 @@ function SidebarSection({
             </span>
           )}
           <span className="ml-auto text-slate-300">
-            {open
-              ? <ChevronDown className="w-3 h-3" />
-              : <ChevronRight className="w-3 h-3" />
-            }
+            {open ? (
+              <ChevronDown className="w-3 h-3" />
+            ) : (
+              <ChevronRight className="w-3 h-3" />
+            )}
           </span>
         </button>
         {action}
@@ -190,7 +201,13 @@ function SidebarSection({
   );
 }
 
-function Tip({ content, children }: { content: string; children: React.ReactNode }) {
+function Tip({
+  content,
+  children,
+}: {
+  content: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="relative group/tip">
       {children}
@@ -224,30 +241,29 @@ export function ChatSidebar({
   const [sessionSearchActive, setSessionSearchActive] = useState(false);
 
   const filteredSessions = searchQuery
-    ? sessions.filter((s) =>
-        s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.preview?.toLowerCase().includes(searchQuery.toLowerCase())
+    ? sessions.filter(
+        (s) =>
+          s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          s.preview?.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : sessions;
 
   // Group sessions by recency
   const today = new Date();
   const todaySessions = filteredSessions.filter(
-    (s) => s.timestamp.toDateString() === today.toDateString()
+    (s) => s.timestamp.toDateString() === today.toDateString(),
   );
   const olderSessions = filteredSessions.filter(
-    (s) => s.timestamp.toDateString() !== today.toDateString()
+    (s) => s.timestamp.toDateString() !== today.toDateString(),
   );
 
   return (
-    <div className="w-full h-full flex flex-col bg-white border-r border-slate-100 select-none">
-
-      <div className="p-3 border-b border-slate-50">
+    <div className="w-full h-full flex flex-col bg-white border-r border-slate-100 select-none p-5">
+      <div className="border-b border-slate-50">
         <FileUploader onUpload={onUpload} />
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar px-2 py-3 space-y-5">
-
+      <div className="flex-1 overflow-y-auto custom-scrollbar py-3 space-y-5">
         {/* Documents Section */}
         <SidebarSection
           icon={FolderOpen}
@@ -257,7 +273,11 @@ export function ChatSidebar({
           {sources.length > 0 ? (
             <div className="space-y-0.5">
               {sources.map((source) => (
-                <SourceItem key={source.id} source={source} onRemove={onRemoveSource} />
+                <SourceItem
+                  key={source.id}
+                  source={source}
+                  onRemove={onRemoveSource}
+                />
               ))}
             </div>
           ) : (
@@ -338,7 +358,9 @@ export function ChatSidebar({
               {/* Today group */}
               {todaySessions.length > 0 && (
                 <div>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-300 px-2 mb-1">Today</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-300 px-2 mb-1">
+                    Today
+                  </p>
                   <SessionList
                     sessions={todaySessions}
                     activeSessionId={activeSessionId}
@@ -350,7 +372,9 @@ export function ChatSidebar({
               {/* Older group */}
               {olderSessions.length > 0 && (
                 <div>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-300 px-2 mb-1">Earlier</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-300 px-2 mb-1">
+                    Earlier
+                  </p>
                   <SessionList
                     sessions={olderSessions}
                     activeSessionId={activeSessionId}
@@ -367,14 +391,22 @@ export function ChatSidebar({
         <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg">
           <Sparkles className="w-3.5 h-3.5 text-primary" />
           <span className="text-[10px] text-slate-500 flex-1">
-            <span className="font-semibold text-slate-700">{sources.length}</span> docs ·{" "}
-            <span className="font-semibold text-slate-700">{sessions.length}</span> chats
+            <span className="font-semibold text-slate-700">
+              {sources.length}
+            </span>{" "}
+            docs ·{" "}
+            <span className="font-semibold text-slate-700">
+              {sessions.length}
+            </span>{" "}
+            chats
           </span>
         </div>
-        <button className="
+        <button
+          className="
           w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] text-slate-500
           hover:bg-slate-100 hover:text-slate-700 transition-colors duration-150
-        ">
+        "
+        >
           <BookOpen className="w-3.5 h-3.5" />
           All Notebooks
         </button>
@@ -403,21 +435,24 @@ function SessionList({
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+              if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 onSessionSelect(session.id);
               }
             }}
             className={`
               w-full relative cursor-pointer group flex flex-col gap-0.5 px-2.5 py-2 rounded-lg transition-all duration-150 border text-left
-              ${isActive
-                ? "bg-primary/5 border-primary/10 shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)]"
-                : "border-transparent hover:bg-slate-50 hover:border-slate-100"
+              ${
+                isActive
+                  ? "bg-primary/5 border-primary/10 shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)]"
+                  : "border-transparent hover:bg-slate-50 hover:border-slate-100"
               }
             `}
           >
             <div className="flex items-center gap-2 justify-between">
-              <span className={`text-[12px] truncate leading-tight ${isActive ? "font-semibold text-slate-900" : "font-medium text-slate-700"}`}>
+              <span
+                className={`text-[12px] truncate leading-tight ${isActive ? "font-semibold text-slate-900" : "font-medium text-slate-700"}`}
+              >
                 {session.title}
               </span>
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -434,8 +469,13 @@ function SessionList({
               <p className="text-[10px] text-slate-400 truncate flex-1 leading-snug">
                 {session.preview || "No messages yet"}
               </p>
-              <span className={`text-[9px] whitespace-nowrap shrink-0 ${isActive ? "text-primary/60" : "text-slate-300"}`}>
-                {session.timestamp.toLocaleDateString([], { month: "short", day: "numeric" })}
+              <span
+                className={`text-[9px] whitespace-nowrap shrink-0 ${isActive ? "text-primary/60" : "text-slate-300"}`}
+              >
+                {session.timestamp.toLocaleDateString([], {
+                  month: "short",
+                  day: "numeric",
+                })}
               </span>
             </div>
             {isActive && (

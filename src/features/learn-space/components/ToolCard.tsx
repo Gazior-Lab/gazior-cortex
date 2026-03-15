@@ -42,10 +42,12 @@ export function ToolCard({ tool, onClick, isActive }: ToolCardProps) {
               {tool.title}
             </h4>
             {tool.badge && (
-              <span className={`
+              <span
+                className={`
                 px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded-md
                 ${isActive ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-500"}
-              `}>
+              `}
+              >
                 {tool.badge}
               </span>
             )}
@@ -60,7 +62,7 @@ export function ToolCard({ tool, onClick, isActive }: ToolCardProps) {
         <Button
           variant={isActive ? "primary" : "outline"}
           size="sm"
-          className={`w-full font-semibold border-2 ${!isActive ? "opacity-0 group-hover:opacity-100 bg-white" : "shadow-md shadow-primary/20"} transition-all duration-300`}
+          className={`w-full font-semibold border-2 ${!isActive ? " bg-white" : "shadow-md shadow-primary/20"} transition-all duration-300`}
         >
           {isActive ? "Currently Active" : "Open Tool"}
         </Button>
