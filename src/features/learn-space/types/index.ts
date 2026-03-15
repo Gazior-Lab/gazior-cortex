@@ -114,6 +114,20 @@ export interface Note {
 
 
 
+export interface SummaryItem {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface Summary {
+  overview: string;
+  keyTakeaways: string[];
+  mainTopics: SummaryItem[];
+}
+
+
+
 export type ActivePanel =
   | 'chat'
   | 'quiz'

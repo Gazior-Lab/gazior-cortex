@@ -17,8 +17,7 @@ import {
 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import type { ChatSession, Source } from "../types";
-import { Badge } from "./ui/Badge";
-import { Button } from "./ui/Button";
+
 
 function FileIcon({ type }: { type: string }) {
   const isPdf = type?.toLowerCase() === "pdf";

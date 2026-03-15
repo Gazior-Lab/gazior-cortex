@@ -1,4 +1,4 @@
-import type { QuizQuestion, ExamQuestion, Flashcard, Note } from "../types";
+import type { QuizQuestion, ExamQuestion, Flashcard, Note, Summary } from "../types";
 
 export const MOCK_QUIZ: QuizQuestion[] = [
   {
@@ -131,3 +131,30 @@ export const MOCK_NOTES: Note[] = [
     tags: ["exam", "prep"],
   },
 ];
+
+export const MOCK_SUMMARY: Summary = {
+  overview: "This document provides a comprehensive overview of Machine Learning fundamentals, focusing on deep neural networks, their architectures, and training methodologies. It covers the transition from traditional ML to deep representation learning.",
+  keyTakeaways: [
+    "Deep Learning identifies patterns through hierarchical layers of abstraction.",
+    "Backpropagation and Gradient Descent are the engines of neural network training.",
+    "CNNs revolutionized computer vision by preserving spatial relationships.",
+    "Transformers have become the state-of-the-art for natural language processing."
+  ],
+  mainTopics: [
+    {
+      id: "t1",
+      title: "Neural Network Architectures",
+      description: "Exploration of CNNs, RNNs, and Transformers and their specific use cases in modern AI."
+    },
+    {
+      id: "t2",
+      title: "Optimization Techniques",
+      description: "Overview of loss functions, learning rates, and optimizers like Adam and SGD."
+    },
+    {
+      id: "t3",
+      title: "Model Evaluation",
+      description: "Methods for assessing performance, including precision, recall, and F1-score."
+    }
+  ]
+};

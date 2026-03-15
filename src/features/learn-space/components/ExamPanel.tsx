@@ -9,102 +9,108 @@ import {
   ShieldCheck,
   Timer,
   X,
+  History,
+  Trophy,
+  Activity
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ExamQuestion } from "../types";
-import { Badge, Button, Card, ProgressBar } from "./ui";
+import { Badge, Button, Card, ProgressBar, Divider } from "./ui";
 
 interface ExamPanelProps {
   questions: ExamQuestion[];
   timeLimit?: number; // minutes
+  // Persistent state props
+  isStarted: boolean;
+  isFinished: boolean;
+  currentIndex: number;
+  answers: Record<string, string>;
+  timeLeft: number;
+  onStart: () => void;
+  onReset: () => void;
+  onFinish: () => void;
+  onSelectAnswer: (questionId: string, optionId: string) => void;
+  onIndexChange: (index: number) => void;
 }
 
-export function ExamPanel({ questions, timeLimit = 15 }: ExamPanelProps) {
-  const [isStarted, setIsStarted] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [timeLeft, setTimeLeft] = useState(timeLimit * 60);
-  const [isFinished, setIsFinished] = useState(false);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isStarted && !isFinished && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (timeLeft === 0 && isStarted && !isFinished) {
-      // eslint-disable-next-line react-hooks/immutability
-      finishExam();
-    }
-    return () => clearInterval(interval);
-  }, [isStarted, isFinished, timeLeft]);
-
+export function ExamPanel({
+  questions,
+  timeLimit = 15,
+  isStarted,
+  isFinished,
+  currentIndex,
+  answers,
+  timeLeft,
+  onStart,
+  onReset,
+  onFinish,
+  onSelectAnswer,
+  onIndexChange,
+}: ExamPanelProps) {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const startExam = () => setIsStarted(true);
+  const startExam = onStart;
 
   const selectAnswer = (optionId: string) => {
-    setAnswers((prev) => ({ ...prev, [questions[currentIndex].id]: optionId }));
+    onSelectAnswer(questions[currentIndex].id, optionId);
   };
 
-  const finishExam = () => {
-    setIsFinished(true);
-  };
+  const finishExam = onFinish;
 
   if (!isStarted) {
     return (
-      <Card className="p-8 text-center animate-in zoom-in-95 duration-300">
-        <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
-          <GraduationCap className="w-8 h-8" />
-        </div>
-        <h3 className="text-xl font-bold mb-2">Ready for the Exam?</h3>
-        <p className="text-sm text-slate-500 mb-6">
-          {" "}
-          This AI-generated exam will test your mastery across all uploaded
-          documents.
-        </p>
-
-        <div className="max-w-xs mx-auto space-y-3 mb-8">
-          <div className="flex justify-between items-center text-sm py-2 border-b border-slate-100">
-            <span className="text-slate-500 flex items-center gap-2">
-              <Timer className="w-4 h-4" /> Time Limit
-            </span>
-            <span className="font-semibold text-slate-900">
-              {timeLimit} Minutes
-            </span>
+      <div className="max-w-xl mx-auto py-8">
+        <Card className="border border-slate-200 shadow-none bg-white p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
+              <GraduationCap className="w-8 h-8" />
+            </div>
+            <h3 className="text-2xl font-semibold text-slate-800 mb-2">Certification Exam</h3>
+            <p className="text-slate-500 text-sm max-w-sm mx-auto">
+              Validate your knowledge with a dynamically generated exam covering all your current documents.
+            </p>
           </div>
-          <div className="flex justify-between items-center text-sm py-2 border-b border-slate-100">
-            <span className="text-slate-500 flex items-center gap-2">
-              <FileText className="w-4 h-4" /> Questions
-            </span>
-            <span className="font-semibold text-slate-900">
-              {questions.length} Items
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-sm py-2 border-b border-slate-100">
-            <span className="text-slate-500 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4" /> Integrity
-            </span>
-            <span className="font-semibold text-success">Verified</span>
-          </div>
-        </div>
 
-        <div className="p-4 bg-amber-50 border border-amber-100 rounded-md mb-8 flex gap-3 text-left">
-          <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
-          <p className="text-xs text-amber-800 leading-relaxed">
-            Once you start, the timer cannot be paused. Make sure you are in a
-            quiet environment.
-          </p>
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="flex flex-col items-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+              <Timer className="w-4 h-4 text-slate-400 mb-2" />
+              <span className="text-xs uppercase font-semibold text-slate-500 mb-1">Time Limit</span>
+              <span className="text-base font-bold text-slate-700">{timeLimit}m</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+              <FileText className="w-4 h-4 text-slate-400 mb-2" />
+              <span className="text-xs uppercase font-semibold text-slate-500 mb-1">Questions</span>
+              <span className="text-base font-bold text-slate-700">{questions.length} Items</span>
+            </div>
 
-        <Button size="lg" className="w-full" onClick={startExam}>
-          Start Exam
-        </Button>
-      </Card>
+            <div className="flex flex-col items-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 mb-2" />
+              <span className="text-xs uppercase font-semibold text-slate-500 mb-1">Status</span>
+              <span className="text-base font-bold text-emerald-600">Verified</span>
+            </div>
+          </div>
+
+          <div className="p-4 bg-slate-50 rounded-lg mb-8 flex gap-3 items-start border border-slate-100">
+            <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+            <div>
+              <h5 className="text-slate-700 text-sm font-semibold mb-1">Critical Requirement</h5>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                The timer is continuous. Ensure you have a stable connection and a distraction-free environment before proceeding.
+              </p>
+            </div>
+          </div>
+
+          <Button size="lg" className="w-full shadow-none font-semibold" onClick={startExam}>
+            Initiate Exam
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </Card>
+      </div>
     );
   }
 
@@ -117,183 +123,235 @@ export function ExamPanel({ questions, timeLimit = 15 }: ExamPanelProps) {
     const percentage = Math.round((score / totalPoints) * 100);
 
     return (
-      <Card className="p-8 text-center animate-in zoom-in-95 duration-300">
-        <h3 className="text-2xl font-bold mb-6">Exam Results</h3>
+      <div className="max-w-3xl mx-auto py-8">
+        <Card className="border border-slate-200 shadow-none bg-white p-0 overflow-hidden">
+          <div className="text-center p-8 border-b border-slate-100 bg-slate-50/50">
+            <Badge variant={percentage >= 70 ? "success" : "primary"} className="mb-4 shadow-none">
+              Assessment Report
+            </Badge>
+            
+            <div className="flex flex-col items-center justify-center">
+               <span className="text-5xl font-bold text-slate-800 mb-2">
+                 {percentage}%
+               </span>
+               <span className="text-sm font-medium text-slate-500">
+                 Final Score
+               </span>
+            </div>
 
-        <div className="relative w-32 h-32 mx-auto mb-8">
-          <svg className="w-full h-full transform -rotate-90">
-            <circle
-              cx="64"
-              cy="64"
-              r="58"
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="transparent"
-              className="text-slate-100"
-            />
-            <circle
-              cx="64"
-              cy="64"
-              r="58"
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="transparent"
-              className={`transition-all duration-1000 ${percentage >= 70 ? "text-success" : "text-primary"}`}
-              strokeDasharray={364.4}
-              strokeDashoffset={364.4 - (percentage / 100) * 364.4}
-              strokeLinecap="round"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-bold text-slate-900">
-              {percentage}%
-            </span>
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
-              Scored
-            </span>
+            <div className="flex items-center justify-center gap-6 mt-6">
+               <div className="flex flex-col items-center">
+                  <span className="text-xs font-semibold text-slate-400 uppercase mb-1">Status</span>
+                  <span className={`text-sm font-semibold ${percentage >= 70 ? "text-emerald-500" : "text-amber-500"}`}>
+                     {percentage >= 70 ? "Passed" : "Needs Review"}
+                  </span>
+               </div>
+               <div className="w-px h-8 bg-slate-200" />
+               <div className="flex flex-col items-center">
+                  <span className="text-xs font-semibold text-slate-400 uppercase mb-1">Proficiency</span>
+                  <span className="text-sm font-semibold text-slate-700">
+                     {percentage >= 90 ? "Mastery" : percentage >= 70 ? "Advanced" : "Fundamental"}
+                  </span>
+               </div>
+            </div>
           </div>
-        </div>
 
-        <div className="text-sm font-medium text-slate-700 mb-8">
-          Total Points: {score} / {totalPoints}
-        </div>
+          {/* Detailed Content Area */}
+          <div className="p-8">
+            <div className="flex justify-between items-end mb-6">
+               <div>
+                  <h3 className="text-lg font-semibold text-slate-800">Executive Summary</h3>
+               </div>
+               <div className="text-right">
+                  <div className="text-base font-semibold text-slate-700">{score}<span className="text-slate-400 font-normal"> / {totalPoints} pts</span></div>
+               </div>
+            </div>
 
-        <div className="space-y-3 mb-8">
-          {questions.map((q, idx) => {
-            const correct = q.options?.find((o) => o.isCorrect)?.id;
-            const isCorrect = answers[q.id] === correct;
-            return (
-              <div
-                key={q.id}
-                className="flex items-center justify-between p-3 bg-slate-50 rounded-md text-xs"
+            <Divider className="my-6 opacity-50" />
+
+            <div className="space-y-4 mb-8">
+              <h4 className="text-sm font-semibold text-slate-700 mb-4">Question Assessment</h4>
+              {questions.map((q, idx) => {
+                const correct = q.options?.find((o) => o.isCorrect)?.id;
+                const isCorrect = answers[q.id] === correct;
+                return (
+                  <div
+                    key={q.id}
+                    className="flex flex-col p-4 bg-slate-50 border border-slate-100 rounded-lg hover:border-slate-200 transition-colors"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold ${isCorrect ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"}`}>
+                           {idx + 1}
+                        </div>
+                        <span className="font-medium text-slate-700 text-sm">
+                          {q.question.length > 50 ? q.question.substring(0, 50) + "..." : q.question}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                         {isCorrect ? (
+                             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          ) : (
+                             <X className="w-4 h-4 text-red-500" />
+                          )}
+                      </div>
+                    </div>
+                    
+                    {!isCorrect && q.explanation && (
+                       <div className="ml-9 mt-2 pt-2 border-t border-slate-200/50">
+                          <p className="text-xs text-slate-500">
+                             <span className="font-semibold text-slate-700 mr-1">Rationale:</span> 
+                             {q.explanation}
+                          </p>
+                       </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex gap-4">
+              <Button
+                variant="outline"
+                className="flex-1 shadow-none"
+                onClick={onReset}
               >
-                <span className="font-medium text-slate-700">
-                  Question {idx + 1}
-                </span>
-                {isCorrect ? (
-                  <Badge variant="success" className="gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> Correct
-                  </Badge>
-                ) : (
-                  <Badge variant="danger" className="gap-1">
-                    <X className="w-3 h-3" /> Incorrect
-                  </Badge>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        <Button
-          variant="outline"
-          className="w-full"
-          onClick={() => setIsStarted(false)}
-        >
-          Back to Start
-        </Button>
-      </Card>
+                Re-evaluate
+              </Button>
+              <Button
+                className="flex-1 shadow-none"
+                onClick={onReset}
+              >
+                Return to Dashboard
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </div>
     );
   }
 
   const currentQuestion = questions[currentIndex];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-sm py-2 z-10">
+    <div className="max-w-3xl mx-auto space-y-8 py-2">
+      <div className="flex items-center justify-between sticky top-0 bg-white py-4 z-20 border-b border-slate-100">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-slate-900 text-white rounded-md">
-            <Timer className="w-4 h-4" />
+          <div className={`flex items-center gap-2 font-mono text-lg font-semibold ${timeLeft < 60 ? "text-red-600 animate-pulse" : "text-slate-800"}`}>
+            <Timer className="w-5 h-5" />
+            <span>{formatTime(timeLeft)}</span>
           </div>
-          <span
-            className={`text-lg font-mono font-bold ${timeLeft < 60 ? "text-destructive animate-pulse" : "text-slate-900"}`}
-          >
-            {formatTime(timeLeft)}
-          </span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-            Question {currentIndex + 1}/{questions.length}
-          </span>
-          <Button variant="danger" size="xs" onClick={finishExam}>
-            Submit Now
+          <div className="hidden md:flex flex-col items-end">
+             <span className="text-xs text-slate-500 font-medium mb-1">Question {currentIndex + 1} of {questions.length}</span>
+             <ProgressBar 
+                value={((currentIndex + 1) / questions.length) * 100} 
+                className="w-32 h-1.5" 
+                color={timeLeft < 60 ? "accent" : "primary"} 
+             />
+          </div>
+          <Badge variant="outline" className="h-10 px-4 border-slate-200 text-slate-500 font-bold">
+            Item {currentIndex + 1} of {questions.length}
+          </Badge>
+          <Button variant="danger" size="sm" className="hidden md:flex shadow-lg shadow-red-500/10" onClick={finishExam}>
+            Finalize
           </Button>
         </div>
       </div>
 
-      <ProgressBar
-        value={((currentIndex + 1) / questions.length) * 100}
-        color={timeLeft < 60 ? "accent" : "primary"}
-      />
+      <div className="pt-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <Card
+          padding="none"
+          className="border-none shadow-xl bg-white overflow-hidden"
+        >
+          <div className="p-8 md:p-12">
+            <div className="flex justify-between items-start mb-10 gap-6">
+              <h4 className="text-2xl font-extrabold text-slate-900 leading-tight tracking-tight">
+                {currentQuestion.question}
+              </h4>
+              <div className="shrink-0 flex flex-col items-center p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                 <Trophy className="w-5 h-5 text-amber-500 mb-1" />
+                 <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">{currentQuestion.points}pt</span>
+              </div>
+            </div>
 
-      <Card
-        padding="lg"
-        className="border-none shadow-lg bg-white min-h-75 flex flex-col"
-      >
-        <div className="flex justify-between items-start mb-6">
-          <h4 className="text-lg font-bold text-slate-900 leading-relaxed">
-            {currentQuestion.question}
-          </h4>
-          <Badge variant="outline" className="shrink-0">
-            {currentQuestion.points} pts
-          </Badge>
-        </div>
+            <div className="space-y-4 mb-12">
+              {currentQuestion.options?.map((option, idx) => {
+                const isSelected = answers[currentQuestion.id] === option.id;
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => selectAnswer(option.id)}
+                    className={`
+                      w-full text-left p-6 rounded-2xl border-2 transition-all duration-300
+                      flex items-center gap-6 group relative overflow-hidden
+                      ${isSelected ? "border-primary bg-primary/5 ring-4 ring-primary/5" : "border-slate-50 hover:border-slate-200 hover:bg-slate-50/50"}
+                    `}
+                  >
+                    {isSelected && (
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -mr-12 -mt-12" />
+                    )}
+                    <div
+                      className={`
+                      w-10 h-10 rounded-xl border-2 shrink-0 flex items-center justify-center font-black text-sm transition-all
+                      ${isSelected ? "bg-primary border-primary text-white scale-110 rotate-3" : "border-slate-200 text-slate-400 group-hover:border-slate-300"}
+                    `}
+                    >
+                      {String.fromCharCode(65 + idx)}
+                    </div>
+                    <span
+                      className={`text-base font-bold transition-colors ${isSelected ? "text-primary shadow-primary/10" : "text-slate-600 group-hover:text-slate-900"}`}
+                    >
+                      {option.text}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
 
-        <div className="space-y-3 flex-1">
-          {currentQuestion.options?.map((option) => {
-            const isSelected = answers[currentQuestion.id] === option.id;
-            return (
-              <button
-                key={option.id}
-                onClick={() => selectAnswer(option.id)}
-                className={`
-                  w-full text-left p-4 rounded-md border-2 transition-all duration-200
-                  flex items-start gap-4
-                  ${isSelected ? "border-primary bg-primary/5 ring-1 ring-primary/10 shadow-sm" : "border-slate-100 hover:border-slate-200 hover:bg-slate-50"}
-                `}
+            <div className="flex flex-col md:flex-row justify-between gap-4 pt-10 border-t border-slate-100">
+              <Button
+                variant="ghost"
+                size="lg"
+                disabled={currentIndex === 0}
+                className="h-14 font-bold"
+                onClick={() => onIndexChange(currentIndex - 1)}
               >
-                <div
-                  className={`
-                  w-6 h-6 rounded-md border-2 shrink-0 flex items-center justify-center text-[10px] font-bold
-                  ${isSelected ? "bg-primary border-primary text-white" : "border-slate-200 text-slate-400"}
-                `}
-                >
-                  {String.fromCharCode(
-                    65 + currentQuestion.options!.indexOf(option),
-                  )}
-                </div>
-                <span
-                  className={`text-sm ${isSelected ? "font-medium text-primary" : "text-slate-700"}`}
-                >
-                  {option.text}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                Previous Step
+              </Button>
+              <div className="flex gap-4 flex-1 md:flex-none">
+                 {currentIndex === questions.length - 1 ? (
+                    <Button
+                      size="lg"
+                      className="flex-1 md:min-w-[200px] h-14 font-black shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90"
+                      onClick={finishExam}
+                    >
+                      Submit for Analysis
+                      <GraduationCap className="w-5 h-5 ml-2" />
+                    </Button>
+                 ) : (
+                    <Button
+                      size="lg"
+                      className="flex-1 md:min-w-[200px] h-14 font-bold shadow-xl shadow-primary/10"
+                      onClick={() => onIndexChange(currentIndex + 1)}
+                    >
+                      Advance
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                 )}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
 
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="ghost"
-            disabled={currentIndex === 0}
-            onClick={() => setCurrentIndex((prev) => prev - 1)}
-          >
-            Previous
-          </Button>
-          <Button
-            className="min-w-35"
-            onClick={() =>
-              currentIndex === questions.length - 1
-                ? finishExam()
-                : setCurrentIndex((prev) => prev + 1)
-            }
-          >
-            {currentIndex === questions.length - 1
-              ? "Complete Exam"
-              : "Next Question"}
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
-      </Card>
+      <div className="flex items-center justify-center gap-4 text-slate-300 select-none">
+         <div className="h-px w-8 bg-slate-100" />
+         <span className="text-[10px] font-black uppercase tracking-[0.4em]">Integrated Learning Environment</span>
+         <div className="h-px w-8 bg-slate-100" />
+      </div>
     </div>
   );
 }

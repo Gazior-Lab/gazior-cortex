@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  ArrowRight,
-  Brain,
-  CheckCircle2,
-  FileQuestion,
-  RotateCcw,
-  X,
+    ArrowRight,
+    Brain,
+    CheckCircle2,
+    FileQuestion,
+    RotateCcw,
+    X,
 } from "lucide-react";
 import { useState } from "react";
 import type { QuizQuestion, QuizResult } from "../types";
@@ -26,12 +26,9 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
 
   if (questions.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center p-12 text-center bg-slate-50/50 border-dashed border-2 border-slate-200">
-        <div className="relative mb-4">
-          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse" />
-          <FileQuestion className="w-12 h-12 text-primary/60 relative z-10 animate-bounce" style={{ animationDuration: '2s' }} />
-        </div>
-        <p className="text-slate-500 font-medium">Generating your personalized quiz...</p>
+      <Card className="flex flex-col items-center justify-center p-12 text-center bg-white border border-slate-200 shadow-none">
+        <FileQuestion className="w-10 h-10 text-slate-300 mb-4" />
+        <p className="text-slate-600 font-medium">Generating your personalized quiz...</p>
         <p className="text-xs text-slate-400 mt-2">This might take a few seconds</p>
       </Card>
     );
@@ -93,21 +90,21 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
     const percentage = Math.round((score / questions.length) * 100);
 
     return (
-      <Card className="p-8 text-center animate-in zoom-in-95 duration-500 shadow-xl border-primary/20 bg-gradient-to-b from-white to-slate-50/50">
-        <div className="w-24 h-24 bg-gradient-to-tr from-success/20 to-success/5 text-success rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-success/10">
-          <CheckCircle2 className="w-12 h-12" />
+      <Card className="p-8 text-center animate-in zoom-in-95 duration-500 shadow-none border-slate-200 bg-white">
+        <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+          <CheckCircle2 className="w-10 h-10" />
         </div>
-        <h3 className="text-2xl font-bold mb-2">Quiz Completed!</h3>
+        <h3 className="text-xl font-semibold text-slate-800 mb-2">Quiz Completed</h3>
         <p className="text-slate-500 mb-8">
           You&apos;ve successfully tested your knowledge on this subject.
         </p>
 
-        <div className="bg-slate-50 rounded-(--radius-lg) p-6 mb-8 border border-slate-100">
-          <div className="flex justify-between items-end mb-2">
-            <span className="text-sm text-slate-500">Your Score</span>
-            <span className="text-3xl font-bold text-primary">
+        <div className="bg-slate-50 rounded-lg p-6 mb-8 border border-slate-100">
+          <div className="flex justify-between items-end mb-3">
+            <span className="text-sm text-slate-600 font-medium">Your Score</span>
+            <span className="text-2xl font-bold text-slate-800">
               {score}
-              <span className="text-lg text-slate-400">
+              <span className="text-base text-slate-400 font-normal">
                 /{questions.length}
               </span>
             </span>
@@ -116,7 +113,7 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
             value={percentage}
             color={percentage > 70 ? "success" : "primary"}
           />
-          <p className="mt-4 text-sm font-medium text-slate-700">
+          <p className="mt-4 text-sm text-slate-600">
             {percentage >= 90
               ? "Mastery! You know this inside out."
               : percentage >= 70
@@ -126,10 +123,10 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
         </div>
 
         <div className="flex gap-3">
-          <Button variant="outline" className="flex-1" onClick={resetQuiz}>
+          <Button variant="outline" className="flex-1 shadow-none" onClick={resetQuiz}>
             <RotateCcw className="w-4 h-4 mr-2" /> Try Again
           </Button>
-          <Button className="flex-1">Review Answers</Button>
+          <Button className="flex-1 shadow-none">Review Answers</Button>
         </div>
       </Card>
     );
@@ -137,24 +134,20 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
 
   return (
     <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-      <div className="flex items-center justify-between mb-2">
+      {/* Minimal Header */}
+      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <FileQuestion className="w-5 h-5 text-primary" />
-          </div>
-          <h3 className="font-semibold text-slate-900 text-lg">Concept Quiz</h3>
+          <FileQuestion className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-slate-800 text-lg">Concept Quiz</h3>
         </div>
-        <div className="flex flex-col items-end">
-          <span className="text-sm font-semibold text-slate-700">
-            Question {currentIndex + 1}
-            <span className="text-slate-400 font-normal"> of {questions.length}</span>
-          </span>
+        <div className="text-sm text-slate-500">
+          Question {currentIndex + 1} of {questions.length}
         </div>
       </div>
 
       <ProgressBar value={progress} />
 
-      <Card padding="lg" className="border-none shadow-md bg-white">
+      <Card padding="lg" className="border border-slate-200 shadow-none bg-white">
         <h4 className="text-lg font-medium text-slate-900 mb-6 leading-relaxed">
           {currentQuestion.question}
         </h4>
@@ -165,13 +158,13 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
             const isCorrect = option.isCorrect;
             const statusClass = showExplanation
               ? isCorrect
-                ? "border-emerald-500 bg-emerald-50/80 ring-2 ring-emerald-500/20 shadow-sm"
+                ? "border-emerald-500 bg-emerald-50"
                 : isSelected
-                  ? "border-red-500 bg-red-50/80 ring-2 ring-red-500/20 shadow-sm"
-                  : "opacity-50 border-slate-200 bg-slate-50/50 grayscale-[50%]"
+                  ? "border-red-500 bg-red-50"
+                  : "opacity-60 border-slate-200 bg-slate-50/50 grayscale-[20%]"
               : isSelected
-                ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-md transform -translate-y-0.5"
-                : "border-slate-200 hover:border-primary/40 hover:bg-primary/5 hover:shadow-sm";
+                ? "border-primary bg-primary/5"
+                : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/50";
 
             return (
               <button
@@ -222,14 +215,12 @@ export function QuizPanel({ questions, onComplete }: QuizPanelProps) {
         </div>
 
         {showExplanation && (
-          <div className="mt-8 p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 animate-in slide-in-from-bottom-4 fade-in duration-500 shadow-sm">
-            <div className="flex items-center gap-2 mb-3 text-slate-900 font-bold text-xs uppercase tracking-widest">
-              <div className="p-1 bg-primary/10 rounded">
-                <Brain className="w-4 h-4 text-primary" />
-              </div>
+          <div className="mt-8 p-5 rounded-lg bg-slate-50 border border-slate-100 animate-in slide-in-from-bottom-4 fade-in duration-500">
+            <div className="flex items-center gap-2 mb-2 text-slate-700 font-semibold text-sm">
+              <Brain className="w-4 h-4 text-primary" />
               Explanation
             </div>
-            <p className="text-sm text-slate-700 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
               {currentQuestion.explanation}
             </p>
           </div>

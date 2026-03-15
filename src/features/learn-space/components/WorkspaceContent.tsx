@@ -5,7 +5,8 @@ import { QuizPanel } from "./QuizPanel";
 import { ExamPanel } from "./ExamPanel";
 import { Flashcard } from "./Flashcard";
 import { NotesPanel } from "./NotesPanel";
-import { ActivePanel, ChatMessage as Message, Source, QuizQuestion, ExamQuestion, Flashcard as FlashcardType, Note } from "../types";
+import { SummaryPanel } from "./SummaryPanel";
+import { ActivePanel, ChatMessage as Message, Source, QuizQuestion, ExamQuestion, Flashcard as FlashcardType, Note, Summary } from "../types";
 
 interface WorkspaceContentProps {
   activePanel: ActivePanel;
@@ -18,6 +19,10 @@ interface WorkspaceContentProps {
   mockExam: ExamQuestion[];
   mockFlashcards: FlashcardType[];
   mockNotes: Note[];
+  mockSummary: Summary;
+  // Exam persisted state
+  examState: any; // Type this properly if possible
+  examHandlers: any;
 }
 
 export function WorkspaceContent({
@@ -31,6 +36,9 @@ export function WorkspaceContent({
   mockExam,
   mockFlashcards,
   mockNotes,
+  mockSummary,
+  examState,
+  examHandlers,
 }: WorkspaceContentProps) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden relative">
@@ -38,7 +46,9 @@ export function WorkspaceContent({
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-4 lg:px-12 py-6 custom-scrollbar"
       >
-        <div className="max-w-3xl mx-auto w-full">
+        <div className={`mx-auto w-full transition-all duration-500 ${
+          activePanel === "exam" || activePanel === "notes" ? "max-w-6xl" : "max-w-3xl"
+        }`}>
           {activePanel === "chat" && (
             <div className="space-y-4">
               {messages.map((msg) => (
@@ -62,13 +72,21 @@ export function WorkspaceContent({
             <QuizPanel questions={mockQuiz} onComplete={() => {}} />
           )}
 
-          {activePanel === "exam" && <ExamPanel questions={mockExam} />}
+          {activePanel === "exam" && (
+            <ExamPanel 
+              questions={mockExam} 
+              {...examState}
+              {...examHandlers}
+            />
+          )}
 
           {activePanel === "flashcards" && (
             <Flashcard cards={mockFlashcards} />
           )}
 
           {activePanel === "notes" && <NotesPanel notes={mockNotes} />}
+
+          {activePanel === "summary" && <SummaryPanel summary={mockSummary} />}
         </div>
       </div>
 

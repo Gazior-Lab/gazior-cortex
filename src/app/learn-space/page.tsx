@@ -1,12 +1,13 @@
 "use client";
 
-import { ArrowLeft, Brain, PanelLeft, PanelRight, Menu, Search, Sparkles, X } from "lucide-react";
+import { Brain, PanelLeft, Sparkles, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 // Hooks
 import { useChat } from "@/features/learn-space/hooks/useChat";
 import { useSources } from "@/features/learn-space/hooks/useSources";
 import { useLearnSpaceUI } from "@/features/learn-space/hooks/useLearnSpaceUI";
+import { useExam } from "@/features/learn-space/hooks/useExam";
 
 // Components
 import { Card } from "@/features/learn-space/components/ui/Card";
@@ -23,6 +24,7 @@ import {
   MOCK_EXAM,
   MOCK_FLASHCARDS,
   MOCK_NOTES,
+  MOCK_SUMMARY,
 } from "@/features/learn-space/constants/mockData";
 
 
@@ -50,6 +52,19 @@ export default function LearnSpacePage() {
     handlePanelChange,
     toggleRightPanel,
   } = useLearnSpaceUI();
+
+  const {
+    isStarted: isExamStarted,
+    isFinished: isExamFinished,
+    currentIndex: examIndex,
+    setCurrentIndex: setExamIndex,
+    answers: examAnswers,
+    timeLeft: examTimeLeft,
+    startExam,
+    resetExam,
+    finishExam,
+    selectAnswer: selectExamAnswer,
+  } = useExam(MOCK_EXAM, 15);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -127,6 +142,21 @@ export default function LearnSpacePage() {
           mockExam={MOCK_EXAM}
           mockFlashcards={MOCK_FLASHCARDS}
           mockNotes={MOCK_NOTES}
+          mockSummary={MOCK_SUMMARY}
+          examState={{
+            isStarted: isExamStarted,
+            isFinished: isExamFinished,
+            currentIndex: examIndex,
+            answers: examAnswers,
+            timeLeft: examTimeLeft,
+          }}
+          examHandlers={{
+            onStart: startExam,
+            onReset: resetExam,
+            onFinish: finishExam,
+            onSelectAnswer: selectExamAnswer,
+            onIndexChange: setExamIndex,
+          }}
         />
       </main>
 
@@ -182,21 +212,7 @@ export default function LearnSpacePage() {
         />
       )}
 
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #e2e8f0;
-          border-radius: 99px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #cbd5e1;
-        }
-      `}</style>
+
     </div>
   );
 }
