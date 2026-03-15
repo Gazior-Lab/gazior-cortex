@@ -27,8 +27,6 @@ import {
   MOCK_SUMMARY,
 } from "@/features/learn-space/constants/mockData";
 
-
-
 export default function LearnSpacePage() {
   const { sources, uploadFiles, removeSource } = useSources();
   const {
@@ -87,12 +85,12 @@ export default function LearnSpacePage() {
       `}
       >
         <div className="h-full flex flex-col">
-          <div className="h-14 flex items-center justify-between gap-2 px-3 border-b border-slate-50">
+          <div className="h-14 flex items-center justify-between gap-2 py-8 px-3 border-b border-slate-200">
             <div className="flex items-center gap-2.5 pl-1.5">
               <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-slate-800 tracking-tight">
+              <span className="font-bold text-lg text-slate-800 tracking-tight">
                 Gazior Cortex
               </span>
             </div>
@@ -115,7 +113,6 @@ export default function LearnSpacePage() {
             onSessionSelect={switchSession}
             onNewSession={createSession}
           />
-
         </div>
       </aside>
 
@@ -195,14 +192,17 @@ export default function LearnSpacePage() {
         </div>
 
         <button
-           onClick={() => setIsRightPanelOpen(false)}
-           className="lg:hidden absolute top-4 right-4 p-1.5 bg-slate-100 rounded-full text-slate-500"
+          onClick={() => setIsRightPanelOpen(false)}
+          className="lg:hidden absolute top-4 right-4 p-1.5 bg-slate-100 rounded-full text-slate-500"
         >
-           <X className="w-4 h-4" />
+          <X className="w-4 h-4" />
         </button>
       </aside>
 
-      {(isMobileSidebarOpen || (isRightPanelOpen && typeof window !== 'undefined' && window.innerWidth < 1024)) && (
+      {(isMobileSidebarOpen ||
+        (isRightPanelOpen &&
+          typeof window !== "undefined" &&
+          window.innerWidth < 1024)) && (
         <div
           onClick={() => {
             setIsMobileSidebarOpen(false);
@@ -211,8 +211,6 @@ export default function LearnSpacePage() {
           className="lg:hidden fixed inset-0 bg-slate-900/20 backdrop-blur-[2px] z-40 transition-opacity"
         />
       )}
-
-
     </div>
   );
 }
