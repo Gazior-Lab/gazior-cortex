@@ -63,14 +63,18 @@ export function LearningTools({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2.5">
           <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-primary/20 to-primary/5 text-primary shadow-sm ring-1 ring-primary/20">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-bold text-slate-900 text-base tracking-tight">Learning Studio</h3>
-            <p className="text-[11px] text-slate-500 font-medium mt-0.5">Select an AI tool to begin</p>
+            <h3 className="font-bold text-slate-900 text-base tracking-tight">
+              Learning Studio
+            </h3>
+            <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+              Select an AI tool to begin
+            </p>
           </div>
         </div>
       </div>

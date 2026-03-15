@@ -121,7 +121,7 @@ function MessageToolbar({
   };
 
   return (
-    <div className="flex items-center gap-0.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+    <div className="flex items-center gap-0.5 mt-2 transition-opacity">
       <Tooltip content={copied ? "Copied!" : "Copy"}>
         <button
           onClick={handleCopy}
@@ -194,7 +194,7 @@ export function ChatMessage({
       message.timestamp.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-      })
+      }),
     );
   }, [message.timestamp]);
 
@@ -255,7 +255,6 @@ export function ChatMessage({
 
         <span className="text-[11px] text-muted mt-1 px-1">
           {formattedTime}
-
         </span>
       </div>
     </div>
