@@ -29,7 +29,7 @@ export function ToolCard({ tool, onClick, isActive }: ToolCardProps) {
           p-2.5 rounded-xl transition-all duration-500 shadow-sm
           ${
             isActive
-              ? "bg-gradient-to-br from-primary to-primary/80 text-white ring-4 ring-primary/20 scale-110"
+              ? "bg-linear-to-br from-primary to-primary/80 text-white ring-4 ring-primary/20 scale-110"
               : "bg-white border border-slate-100 text-primary group-hover:bg-primary/10 group-hover:border-primary/20 group-hover:scale-105"
           }
         `}

@@ -209,8 +209,8 @@ export function ChatMessage({
       <div
         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${
           isUser
-            ? "bg-gradient-to-tr from-slate-200 to-slate-100 ring-1 ring-slate-200"
-            : "bg-gradient-to-tr from-primary to-primary/80 ring-2 ring-primary/20 text-white"
+            ? "bg-linear-to-tr from-slate-200 to-slate-100 ring-1 ring-slate-200"
+            : "bg-linear-to-tr from-primary to-primary/80 ring-2 ring-primary/20 text-white"
         }`}
       >
         {isUser ? (
@@ -226,7 +226,7 @@ export function ChatMessage({
         <div
           className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
             isUser
-              ? "bg-gradient-to-br from-primary to-primary/90 text-white rounded-tr-sm shadow-sm"
+              ? "bg-linear-to-br from-primary to-primary/90 text-white rounded-tr-sm shadow-sm"
               : "bg-white border border-slate-200 shadow-sm shadow-slate-200/50 rounded-tl-sm ring-1 ring-black/5"
           }`}
         >

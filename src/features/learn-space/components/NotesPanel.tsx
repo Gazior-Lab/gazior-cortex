@@ -174,7 +174,7 @@ export function NotesPanel({ notes }: NotesPanelProps) {
                    <textarea
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
-                    className="w-full h-[500px] bg-slate-50 border border-slate-200 rounded-3xl p-8 text-lg font-medium leading-relaxed resize-none focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none transition-all shadow-inner"
+                    className="w-full h-125 bg-slate-50 border border-slate-200 rounded-3xl p-8 text-lg font-medium leading-relaxed resize-none focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none transition-all shadow-inner"
                     placeholder="Enter note content here..."
                   />
                 </div>
